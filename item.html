@@ -4,15 +4,128 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewpoint" content="width=device-width, initial-scale=1.0"> 
-    <title style="color: aquamarine;">Item</title>
+    <title style="color: aquamarine;">Product</title>
  <style>
-@import url('https://fonts.googleapis.com/css2?family=Imperial+Script&display=swap');
-        .imperial-script-regular {
-  font-family: "Imperial Script", cursive;
-  font-weight: 400;
-  font-style: normal;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .products-container {
+            display: flex;
+            gap: 20px;
+            padding: 30px;
+            overflow-x: auto; /* Allows horizontal scrolling if needed */
+            background-color: #f5f5f5;
+            min-height: 300px;
+            align-items: flex-start;
+        }
+        
+        .product-card {
+            width: 90px;
+            height: 240px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            flex-shrink: 0; /* Prevents cards from shrinking */
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 90px; /* Matches the width for square image */
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .product-info {
+            padding: 10px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-name {
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 5px;
+            color: #333;
+            line-height: 1.3;
+            word-wrap: break-word;
+        }
+        
+        .product-price {
+            color: #e44d26;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .product-description {
+            font-size: 10px;
+            color: #666;
+            line-height: 1.2;
+            margin-bottom: 10px;
+            flex-grow: 1;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+        
+        .add-to-cart {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        
+        .add-to-cart:hover {
+            background-color: #45a049;
+        }
+        
+        /* For horizontal scrolling */
+        .products-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .products-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        .products-container::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        
+        .products-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        /* Title above products */
+        .section-title {
+            padding: 20px 30px 0;
+            font-size: 24px;
+            color: #333;
+            font-weight: bold;
+        }
     </style>
+</head>
 <body style="background-image: url('rcmc website/background.jpg');font-family: 'Trebuchet MS'">
     <div style="background-color: rgb(180, 150, 210); text-align: left; padding: 20px; display: flex; align-items: center; width: 100%; height: 90px">
         <a href="https://rcmc4a.github.io/rcmc4a/" style="color: #000000; margin: 50px">Home Page</a>
@@ -23,8 +136,61 @@
         <div style="margin-left: auto;"></div>
         <img src="rcmc website/icon.jpg" alt="rcmc icon" width="75px" height="75px" style="margin: 50px">
     </div>
-    <div style="max-width: 700px;margin: 30px auto;">
-        <p style="font-size: 24px; color: #FFFFFF">This is the item page.</p>
-    </div>
+    <h2 class="section-title">Our Products</h2>
+    <div class="products-container">
+        <!-- Product 1 -->
+        <div class="product-card">
+            <img src="https://via.placeholder.com/90x90/FF6B6B/FFFFFF?text=Product+1" alt="Product 1" class="product-image">
+            <div class="product-info">
+                <div class="product-name">Wireless Earbuds</div>
+                <div class="product-price">$49.99</div>
+                <div class="product-description">High-quality wireless earbuds with noise cancellation and 24h battery life.</div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+        
+        <!-- Product 2 -->
+        <div class="product-card">
+            <img src="https://via.placeholder.com/90x90/4ECDC4/FFFFFF?text=Product+2" alt="Product 2" class="product-image">
+            <div class="product-info">
+                <div class="product-name">Smart Watch</div>
+                <div class="product-price">$199.99</div>
+                <div class="product-description">Fitness tracker with heart rate monitor and GPS.</div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+        
+        <!-- Product 3 -->
+        <div class="product-card">
+            <img src="https://via.placeholder.com/90x90/45B7D1/FFFFFF?text=Product+3" alt="Product 3" class="product-image">
+            <div class="product-info">
+                <div class="product-name">Phone Case</div>
+                <div class="product-price">$24.99</div>
+                <div class="product-description">Protective case with anti-scratch coating.</div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+        
+        <!-- Product 4 -->
+        <div class="product-card">
+            <img src="https://via.placeholder.com/90x90/96CEB4/FFFFFF?text=Product+4" alt="Product 4" class="product-image">
+            <div class="product-info">
+                <div class="product-name">USB-C Cable</div>
+                <div class="product-price">$15.99</div>
+                <div class="product-description">Fast charging 3ft cable with data transfer.</div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+        
+        <!-- Product 5 -->
+        <div class="product-card">
+            <img src="https://via.placeholder.com/90x90/FECA57/FFFFFF?text=Product+5" alt="Product 5" class="product-image">
+            <div class="product-info">
+                <div class="product-name">Portable Speaker</div>
+                <div class="product-price">$79.99</div>
+                <div class="product-description">Waterproof Bluetooth speaker with 12h playtime.</div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
 </body>
 </html>
