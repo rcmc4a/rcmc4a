@@ -126,6 +126,137 @@
             font-weight: bold;
         }
  </style>
+<script>
+    // Cart data structure
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    // Save cart to localStorage
+    function saveCart() {
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }
+    
+    // Update cart display
+    function updateCartDisplay() {
+        // Update count
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        document.getElementById('cart-count').textContent = totalItems;
+        
+        // Update dropdown items
+        const cartItemsDiv = document.getElementById('cart-items');
+        cartItemsDiv.innerHTML = '';
+        
+        let totalPrice = 0;
+        
+        if (cart.length === 0) {
+            cartItemsDiv.innerHTML = '<p>Your cart is empty</p>';
+        } else {
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                totalPrice += itemTotal;
+                
+                cartItemsDiv.innerHTML += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #eee;">
+                        <div>
+                            <strong>${item.name}</strong><br>
+                            <small>$${item.price.toFixed(2)} × ${item.quantity}</small>
+                        </div>
+                        <div>
+                            <span style="font-weight: bold;">$${itemTotal.toFixed(2)}</span>
+                            <button onclick="removeFromCart(${index})" style="margin-left: 10px; background: #ff4444; color: white; border: none; padding: 2px 6px; border-radius: 3px;">×</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        
+        // Update total
+        document.getElementById('cart-total').textContent = `Total: $${totalPrice.toFixed(2)}`;
+        
+        // Save to localStorage
+        saveCart();
+    }
+    
+    // Add to cart function
+    function addToCart(productName, productPrice) {
+        // Check if item already in cart
+        const existingItem = cart.find(item => item.name === productName);
+        
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({
+                name: productName,
+                price: productPrice,
+                quantity: 1
+            });
+        }
+        
+        updateCartDisplay();
+        showNotification(`${productName} added to cart!`);
+    }
+    
+    // Remove from cart
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        updateCartDisplay();
+    }
+    
+    // Notification function
+    function showNotification(message) {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.textContent = message;
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
+    }
+    
+    // Cart dropdown toggle
+    document.getElementById('cart-button').addEventListener('click', function(e) {
+        e.stopPropagation();
+        const dropdown = document.getElementById('cart-dropdown');
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function() {
+        document.getElementById('cart-dropdown').style.display = 'none';
+    });
+    
+    // Prevent dropdown from closing when clicking inside
+    document.getElementById('cart-dropdown').addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+    
+    // Checkout button
+    document.getElementById('checkout-btn').addEventListener('click', function() {
+        if (cart.length === 0) {
+            alert('Your cart is empty!');
+            return;
+        }
+        alert('Proceeding to checkout...');
+        // Here you would redirect to checkout page
+        // window.location.href = 'checkout.html';
+    });
+    
+    // Initialize cart display on page load
+    document.addEventListener('DOMContentLoaded', updateCartDisplay);
+</script>
 <body style="background-image: url('rcmc website/background.jpg');font-family: 'Trebuchet MS'">
     <div style="background-color: rgb(180, 150, 210); text-align: left; padding: 20px; display: flex; align-items: center; width: 100%">
         <a href="https://rcmc4a.github.io/rcmc4a/" style="color: #000000; margin: 42px">Home Page</a>
