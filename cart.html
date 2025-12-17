@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping Cart</title>
+    <style>
+        .cart-container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #eee; }
+        .quantity-controls { display: flex; align-items: center; gap: 10px; }
+        .cart-summary { background: #f9f9f9; padding: 20px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="cart-container">
+        <h1>Your Shopping Cart</h1>
+        <div id="cart-page-items"></div>
+        <div class="cart-summary">
+            <h3>Order Summary</h3>
+            <div>Subtotal: $<span id="subtotal">0.00</span></div>
+            <div>Shipping: $<span id="shipping">5.99</span></div>
+            <div>Tax: $<span id="tax">0.00</span></div>
+            <h3>Total: $<span id="total">0.00</span></h3>
+            <button onclick="proceedToCheckout()" style="padding: 15px 30px; background: #4CAF50; color: white; border: none; width: 100%; margin-top: 20px;">Proceed to Checkout</button>
+        </div>
+    </div>
+    
+    <script>
+        // Load cart from localStorage
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        
+        // Display cart items
+        function displayCartItems() {
+            const container = document.getElementById('cart-page-items');
+            let subtotal = 0;
+            
+            if (cart.length === 0) {
+                container.innerHTML = '<p>Your cart is empty</p>';
+                return;
+            }
+            
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                
+                container.innerHTML += `
+                    <div class="cart-item">
+                        <div>
+                            <h3>${item.name}</h3>
+                            <p>Price: $${item.price.toFixed(2)}</p>
+                        </div>
+                        <div class="quantity-controls">
+                            <button onclick="updateQuantity(${index}, ${item.quantity - 1})">-</button>
+                            <span>${item.quantity}</span>
+                            <button onclick="updateQuantity(${index}, ${item.quantity + 1})">+</button>
+                        </div>
+                        <div>
+                            <strong>$${itemTotal.toFixed(2)}</strong>
+                            <button onclick="removeItem(${index})" style="margin-left: 10px; color: red;">Remove</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // Calculate totals
+            const shipping = 5.99;
+            const tax = subtotal * 0.08; // 8% tax
+            const total = subtotal + shipping + tax;
+            
+            document.getElementById('subtotal').textContent = subtotal.toFixed(2);
+            document.getElementById('tax').textContent = tax.toFixed(2);
+            document.getElementById('total').textContent = total.toFixed(2);
+        }
+        
+        function updateQuantity(index, newQuantity) {
+            if (newQuantity < 1) {
+                cart.splice(index, 1);
+            } else {
+                cart[index].quantity = newQuantity;
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            location.reload(); // Refresh to update display
+        }
+        
+        function removeItem(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            location.reload();
+        }
+        
+        function proceedToCheckout() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            // Redirect to checkout page
+            window.location.href = 'checkout.html';
+        }
+        
+        // Initialize on page load
+        displayCartItems();
+    </script>
+</body>
+</html>
